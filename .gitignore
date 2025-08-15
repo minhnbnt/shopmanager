@@ -1,0 +1,10 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+
+node_modules/
+
+.env
+.DS_Store
+
+src/main/webapp/assets/css/tailwind.css
+src/main/webapp/assets/js/basecoat/
