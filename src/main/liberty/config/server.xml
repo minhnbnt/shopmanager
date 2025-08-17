@@ -1,9 +1,13 @@
 <server description="defaultServer">
 
     <featureManager>
+        <feature>beanValidation-3.0</feature>
         <feature>jdbc-4.3</feature>
         <feature>jndi-1.0</feature>
-        <feature>webProfile-10.0</feature>
+        <feature>microProfile-7.0</feature>
+        <feature>pages-3.1</feature>
+        <feature>servlet-6.0</feature>
+        <feature>sessionDatabase-1.0</feature>
     </featureManager>
 
     <basicRegistry id="defaultBasicRegistry" realm="BasicRealm">
@@ -18,7 +22,7 @@
         <fileset dir="${server.config.dir}/jdbc" includes="*.jar"/>
     </library>
 
-    <dataSource jndiName="jdbc/myDB">
+    <dataSource id="database" jndiName="jdbc/database">
         <jdbcDriver libraryRef="jdbcLib"/>
         <properties serverName="${DB_HOST}"
                     portNumber="${DB_PORT}"
@@ -26,4 +30,13 @@
                     user="${DB_USER}"
                     password="${DB_PASSWORD}"/>
     </dataSource>
+
+    <httpSessionDatabase id="session_db"
+                         dataSourceRef="database"
+                         tableName="sessions"/>
+
+    <httpSession storageRef="session_db"
+                 cookieSecure="true"
+                 cookieHttpOnly="true"
+                 cookieSameSite="Strict"/>
 </server>
