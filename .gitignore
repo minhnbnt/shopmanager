@@ -13,3 +13,5 @@ src/main/webapp/resources/js/basecoat/
 .factorypath
 .project
 .settings
+
+.idea
