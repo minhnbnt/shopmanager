@@ -1,4 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%@ page import="com.minhnbnt.shopmanager.models.User" %>
+
+<%
+	User user = (User) request.getAttribute("user");
+
+	String redirectUrl = "/login.jsp";
+	if (user != null) {
+		redirectUrl = "/dashboard.jsp";
+	}
+
+	request.setAttribute("redirectUrl", request.getContextPath() + redirectUrl);
+%>
 
 <html lang="en">
 	<head>
@@ -7,6 +20,8 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
 		/>
+		<meta http-equiv="refresh" content="2; URL=${redirectUrl}">
+
 		<title>Shop Manager</title>
 
 		<link
@@ -16,7 +31,7 @@
 		<script src="${pageContext.request.contextPath}/resources/js/darkmode.js"></script>
 	</head>
 
-	<body class="flex items-center w-full h-full justify-center relative">
+	<body class="flex relative h-full items-center justify-center">
 		<button
 			type="button"
 			aria-label="Toggle dark mode"
@@ -62,42 +77,30 @@
 			</span>
 		</button>
 
-		<div class="card flex flex-col w-full md:w-1/2 m-20">
-			<header>
-				<h2>Login to your account</h2>
-				<p>Enter your details below to login to your account</p>
-			</header>
+		<div class="alert flex flex-col w-full md:w-1/2 m-20">
+			<c:choose>
+				<c:when test="${not empty user}">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24" height="24"
+						viewBox="0 0 24 24" fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<circle cx="12" cy="12" r="10"/>
+						<path d="m9 12 2 2 4-4"/>
+					</svg>
+					<h2>You are logged in as user ${user.username}!</h2>
+					<section>Will redirect you after 2 seconds.</section>
+				</c:when>
 
-			<section>
-				<form
-					class="form grid gap-6"
-					method="post"
-					action="${pageContext.request.contextPath}/login"
-				>
-					<div class="grid gap-2">
-						<label for="form-username">Username</label>
-						<input id="form-username" name="username" type="text" placeholder="minhnbnt" required/>
-					</div>
-
-					<div class="grid gap-2">
-						<label for="form-password">Password</label>
-						<input id="form-password" name="password" type="password" required minlength="6"/>
-					</div>
-
-					<footer class="flex flex-col gap-2">
-						<button type="submit" class="btn w-full">Login</button>
-						<p class="mt-4 text-center text-sm">
-							Don't have an account?
-							<a
-								href="${pageContext.request.contextPath}/signup.jsp"
-								class="underline-offset-4 hover:underline"
-							>
-								Sign up
-							</a>
-						</p>
-					</footer>
-				</form>
-			</section>
+				<c:otherwise>
+					<h2>You are not logged in.</h2>
+					<section>Will redirect you to login page after 2 seconds.</section>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</body>
 </html>

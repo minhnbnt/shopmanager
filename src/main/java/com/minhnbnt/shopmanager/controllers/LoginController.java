@@ -1,7 +1,7 @@
 package com.minhnbnt.shopmanager.controllers;
 
 import com.minhnbnt.shopmanager.dtos.LoginFormDto;
-import com.minhnbnt.shopmanager.service.UserService;
+import com.minhnbnt.shopmanager.services.UserService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,7 +24,8 @@ public class LoginController extends HttpServlet {
     private final UserService userService;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws IOException {
 
         var form = new LoginFormDto(
             req.getParameter("username"),
@@ -52,6 +53,6 @@ public class LoginController extends HttpServlet {
         }
 
         req.getSession().setAttribute("username", form.getUsername());
-        resp.sendRedirect("/");
+        resp.sendRedirect(req.getContextPath());
     }
 }

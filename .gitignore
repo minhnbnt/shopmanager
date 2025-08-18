@@ -6,8 +6,8 @@ node_modules/
 .env
 .DS_Store
 
-src/main/webapp/assets/css/tailwind.css
-src/main/webapp/assets/js/basecoat/
+src/main/webapp/resources/css/tailwind.css
+src/main/webapp/resources/js/basecoat/
 
 .classpath
 .factorypath

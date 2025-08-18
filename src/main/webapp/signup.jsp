@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html lang="en">
 	<head>
@@ -64,19 +65,26 @@
 
 		<div class="card flex flex-col w-full md:w-1/2 m-20">
 			<header>
-				<h2>Login to your account</h2>
-				<p>Enter your details below to login to your account</p>
+				<h2>Register an account</h2>
+				<p>Enter your account's details</p>
 			</header>
 
 			<section>
 				<form
 					class="form grid gap-6"
 					method="post"
-					action="${pageContext.request.contextPath}/login"
+					action="${pageContext.request.contextPath}/signup"
 				>
 					<div class="grid gap-2">
 						<label for="form-username">Username</label>
 						<input id="form-username" name="username" type="text" placeholder="minhnbnt" required/>
+						<p class="text-muted-foreground text-sm">This is your public display name.</p>
+					</div>
+
+					<div class="grid gap-2">
+						<label for="form-email">Username</label>
+						<input id="form-email" name="email" type="email" placeholder="minhnbnt@example.com" required/>
+						<p class="text-muted-foreground text-sm">We can contact you with this.</p>
 					</div>
 
 					<div class="grid gap-2">
@@ -84,15 +92,33 @@
 						<input id="form-password" name="password" type="password" required minlength="6"/>
 					</div>
 
+					<c:if test="${not empty validationErrors}">
+						<div class="alert-destructive">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24" height="24" viewBox="0 0 24 24"
+								fill="none" stroke="currentColor" stroke-width="2"
+								stroke-linecap="round" stroke-linejoin="round"
+							>
+								<circle cx="12" cy="12" r="10"/>
+								<line x1="12" x2="12" y1="8" y2="12"/>
+								<line x1="12" x2="12.01" y1="16" y2="16"/>
+							</svg>
+
+							<h2>Something went wrong!</h2>
+							<section>${validationErrors}</section>
+						</div>
+					</c:if>
+
 					<footer class="flex flex-col gap-2">
-						<button type="submit" class="btn w-full">Login</button>
+						<button type="submit" class="btn w-full">Submit</button>
 						<p class="mt-4 text-center text-sm">
-							Don't have an account?
+							Already had an account?
 							<a
-								href="${pageContext.request.contextPath}/signup.jsp"
+								href="${pageContext.request.contextPath}/login.jsp"
 								class="underline-offset-4 hover:underline"
 							>
-								Sign up
+								Login
 							</a>
 						</p>
 					</footer>
