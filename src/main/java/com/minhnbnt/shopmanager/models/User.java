@@ -1,30 +1,24 @@
 package com.minhnbnt.shopmanager.models;
 
-import jakarta.annotation.Nonnull;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@Builder
 public class User {
 
-    private long id;
-    private String username;
-    private String passwordHash;
-    private String email;
-    private Timestamp createdAt;
+    private int id;
 
-    public static User fromResultSet(ResultSet resultSet) throws SQLException {
-        return new User(
-            resultSet.getLong("id"),
-            resultSet.getString("username"),
-            resultSet.getString("password_hash"),
-            resultSet.getString("email"),
-            resultSet.getTimestamp("created_at")
-        );
-    }
+    private String fullName;
+    private Date birth;
+    private String email;
+    private String phoneNumber;
+    private String address;
+
+    private String username;
+    private String password;
 }

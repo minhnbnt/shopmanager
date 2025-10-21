@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<!--suppress HtmlUnknownTarget -->
 <html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
@@ -76,13 +78,43 @@
 				>
 					<div class="grid gap-2">
 						<label for="form-username">Username</label>
-						<input id="form-username" name="username" type="text" placeholder="minhnbnt" required/>
+						<input
+							id="form-username"
+							name="username"
+							type="text"
+							placeholder="minhnbnt"
+							required
+						/>
 					</div>
 
 					<div class="grid gap-2">
 						<label for="form-password">Password</label>
-						<input id="form-password" name="password" type="password" required minlength="6"/>
+						<input
+							id="form-password"
+							name="password"
+							type="password"
+							required
+							minlength="6"
+						/>
 					</div>
+
+					<c:if test="${not empty errorMessage}">
+						<div class="alert-destructive">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24" height="24" viewBox="0 0 24 24"
+								fill="none" stroke="currentColor" stroke-width="2"
+								stroke-linecap="round" stroke-linejoin="round"
+							>
+								<circle cx="12" cy="12" r="10"/>
+								<line x1="12" x2="12" y1="8" y2="12"/>
+								<line x1="12" x2="12.01" y1="16" y2="16"/>
+							</svg>
+
+							<h2>Login error!</h2>
+							<section class="max-h-[200px] w-full overflow-scroll">${errorMessage}</section>
+						</div>
+					</c:if>
 
 					<footer class="flex flex-col gap-2">
 						<button type="submit" class="btn w-full">Login</button>
