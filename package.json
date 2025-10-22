@@ -5,6 +5,7 @@
     "build": "pnpm build:css && pnpm build:liberty",
     "build:css": "tailwindcss -i ./src/main/tailwindcss/input.css -o ./src/main/webapp/resources/css/tailwind.css --minify",
     "build:liberty": "./mvnw liberty:package -Dinclude=runnable",
+    "preview": "dotenv -- java -jar ./target/shopmanager.jar",
     "dev": "concurrently \"pnpm dev:css\" \"pnpm dev:liberty\"",
     "dev:css": "tailwindcss -i ./src/main/tailwindcss/input.css -o ./src/main/webapp/resources/css/tailwind.css --watch --map",
     "dev:liberty": "dotenv -- ./mvnw liberty:dev",
@@ -14,13 +15,13 @@
   "author": "minhnbnt",
   "packageManager": "pnpm@10.14.0",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.12",
-    "concurrently": "^9.2.0",
+    "@tailwindcss/cli": "^4.1.15",
+    "concurrently": "^9.2.1",
     "cpx2": "^8.0.0",
     "dotenv-cli": "^10.0.0"
   },
   "dependencies": {
     "basecoat-css": "^0.3.2",
-    "tailwindcss": "^4.1.12"
+    "tailwindcss": "^4.1.15"
   }
 }
