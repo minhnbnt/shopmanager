@@ -3,11 +3,11 @@
   "version": "0.1-SNAPSHOT",
   "scripts": {
     "build": "pnpm build:css && pnpm build:liberty",
-    "build:css": "tailwindcss -i ./src/main/tailwindcss/input.css -o ./src/main/webapp/resources/css/tailwind.css --minify",
+    "build:css": "tailwindcss -i main/tailwindcss/input.css -o main/webapp/resources/css/tailwind.css -m --cwd ./src",
     "build:liberty": "./mvnw liberty:package -Dinclude=runnable",
     "preview": "dotenv -- java -jar ./target/shopmanager.jar",
     "dev": "concurrently \"pnpm dev:css\" \"pnpm dev:liberty\"",
-    "dev:css": "tailwindcss -i ./src/main/tailwindcss/input.css -o ./src/main/webapp/resources/css/tailwind.css --watch --map",
+    "dev:css": "tailwindcss -i main/tailwindcss/input.css -o main/webapp/resources/css/tailwind.css -w --map --cwd ./src",
     "dev:liberty": "dotenv -- ./mvnw liberty:dev",
     "postinstall": "cpx \"./node_modules/basecoat-css/dist/js/*.min.js\" ./src/main/webapp/resources/js/basecoat",
     "clean": "./mvnw clean:clean"
