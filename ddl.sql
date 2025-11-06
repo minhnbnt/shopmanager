@@ -6,7 +6,8 @@ CREATE TABLE tblUser (
     phoneNumber VARCHAR(10),
     address VARCHAR(255),
     username VARCHAR(30) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE tblShop (
@@ -64,7 +65,7 @@ CREATE TABLE tblBuyBill (
     receivedOn DATE,
     customerId INT(10) UNSIGNED NOT NULL,
     saleAgentId INT(10) UNSIGNED NOT NULL,
-    deliveryStaffId INT(10) UNSIGNED NOT NULL,
+    deliveryStaffId INT(10) UNSIGNED,
     FOREIGN KEY (customerId) REFERENCES tblCustomer(id),
     FOREIGN KEY (saleAgentId) REFERENCES tblSaleAgent(staffUserId),
     FOREIGN KEY (deliveryStaffId) REFERENCES tblDeliveryStaff(staffUserId)

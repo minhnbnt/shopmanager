@@ -19,7 +19,7 @@ public class UserDAO {
 
     public boolean checkLogin(User user) {
 
-        var sql = "SELECT password FROM tblUser WHERE username = ?";
+        var sql = "SELECT password, role FROM tblUser WHERE username = ?";
 
         try (
             var connection = dataSource.getConnection();
@@ -36,10 +36,19 @@ public class UserDAO {
                 }
 
                 var hashedPassword = resultSet.getString("password");
-                return passwordEncoder.matches(
+                var isPasswordMatch = passwordEncoder.matches(
                     user.getPassword(),
                     hashedPassword
                 );
+
+                if (!isPasswordMatch) {
+                    return false;
+                }
+
+                var role = resultSet.getString("role");
+                user.setRole(role);
+
+                return true;
             }
 
         } catch (SQLException e) {

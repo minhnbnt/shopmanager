@@ -1,6 +1,6 @@
 package com.minhnbnt.shopmanager.dao;
 
-import com.minhnbnt.shopmanager.models.Product;
+import com.minhnbnt.shopmanager.models.DeliveryStaff;
 import jakarta.annotation.Nullable;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
@@ -12,38 +12,35 @@ import lombok.RequiredArgsConstructor;
 
 @Dependent
 @RequiredArgsConstructor(onConstructor_ = @Inject)
-public class ProductDAO {
+public class DeliveryStaffDAO {
 
     private final DataSource dataSource;
 
-    public List<Product> findByKeyword(String keyword) {
+    public List<DeliveryStaff> listAll() {
         var sql = """
-            SELECT id, name, producer, type, description, price FROM tblProduct
-            WHERE name        LIKE CONCAT('%', ?, '%')
-               OR description LIKE CONCAT('%', ?, '%')
+            SELECT u.id, u.username, u.fullName, u.phoneNumber, u.email
+            FROM tblDeliveryStaff ds
+            INNER JOIN tblUser u ON ds.staffUserId = u.id
         """;
 
         try (
             var connection = dataSource.getConnection();
             var statement = connection.prepareStatement(sql)
         ) {
-            statement.setString(1, keyword);
-            statement.setString(2, keyword);
-
-            var results = new ArrayList<Product>();
+            var results = new ArrayList<DeliveryStaff>();
 
             try (var resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    var product = Product.builder()
+
+                    var staff = DeliveryStaff.builder()
                         .id(resultSet.getInt("id"))
-                        .name(resultSet.getString("name"))
-                        .producer(resultSet.getString("producer"))
-                        .type(resultSet.getString("type"))
-                        .description(resultSet.getString("description"))
-                        .price(resultSet.getDouble("price"))
+                        .username(resultSet.getString("username"))
+                        .fullName(resultSet.getString("fullName"))
+                        .phoneNumber(resultSet.getString("phoneNumber"))
+                        .email(resultSet.getString("email"))
                         .build();
 
-                    results.add(product);
+                    results.add(staff);
                 }
             }
 
@@ -54,10 +51,12 @@ public class ProductDAO {
     }
 
     @Nullable
-    public Product findById(int id) {
+    public DeliveryStaff getById(int id) {
         var sql = """
-            SELECT id, name, producer, type, description, price
-            FROM tblProduct WHERE id = ?
+            SELECT u.id, u.username, u.fullName, u.phoneNumber, u.email
+            FROM tblDeliveryStaff ds
+            INNER JOIN tblUser u ON ds.staffUserId = u.id
+            WHERE u.id = ?
         """;
 
         try (
@@ -67,18 +66,18 @@ public class ProductDAO {
             statement.setInt(1, id);
 
             try (var resultSet = statement.executeQuery()) {
-                var found = resultSet.next();
-                if (!found) {
+
+                var exists = resultSet.next();
+                if (!exists) {
                     return null;
                 }
 
-                return Product.builder()
+                return DeliveryStaff.builder()
                     .id(resultSet.getInt("id"))
-                    .name(resultSet.getString("name"))
-                    .producer(resultSet.getString("producer"))
-                    .type(resultSet.getString("type"))
-                    .description(resultSet.getString("description"))
-                    .price(resultSet.getDouble("price"))
+                    .username(resultSet.getString("username"))
+                    .fullName(resultSet.getString("fullName"))
+                    .phoneNumber(resultSet.getString("phoneNumber"))
+                    .email(resultSet.getString("email"))
                     .build();
             }
         } catch (SQLException e) {

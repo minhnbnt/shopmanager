@@ -7,7 +7,7 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>Document</title>
+		<title>${product.name} - Shop Manager</title>
 
 		<link
 			rel="stylesheet"
@@ -109,7 +109,7 @@
 					</li>
 					<li class="inline-flex items-center gap-1.5">
 						<span class="text-foreground font-normal">
-						${product.id}
+							${product.name}
 						</span>
 					</li>
 				</ol>

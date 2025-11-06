@@ -3,16 +3,13 @@ package com.minhnbnt.shopmanager.models;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
-public class Product {
+@Getter
+public class BuyDetail {
 
     private int id;
-
-    private String name;
-    private String producer;
-    private String type;
-    private String description;
-
+    private int quantity;
     private double price;
+    private Product product;
+    private double subTotal;
 }

@@ -9,11 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import lombok.RequiredArgsConstructor;
 
 @RequestScoped
 @WebServlet("/login")
@@ -23,12 +22,14 @@ public class LoginServlet extends HttpServlet {
     private final UserDAO userDAO;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws IOException, ServletException {
 
         var user = User.builder()
             .username(req.getParameter("username"))
@@ -38,17 +39,21 @@ public class LoginServlet extends HttpServlet {
         var errorMessage = "Username or password does not match.";
 
         try {
-
             var isLoginOk = userDAO.checkLogin(user);
 
             if (isLoginOk) {
                 req.getSession().setAttribute("username", user.getUsername());
-                resp.sendRedirect(req.getContextPath() + "/customer/functions");
+
+                var path = "/customer/functions";
+                if (user.getRole().equals("saleAgent")) {
+                    path = "/saleAgent/functions";
+                }
+
+                resp.sendRedirect(req.getContextPath() + path);
                 return;
             }
 
         } catch (RuntimeException e) {
-
             var stringWriter = new StringWriter();
             e.printStackTrace(new PrintWriter(stringWriter));
 

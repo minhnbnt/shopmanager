@@ -3,12 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<!--suppress HtmlUnknownTarget -->
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>Product Search - Shop Manager</title>
+		<title>Bill Search - Shop Manager</title>
+
 		<link
 			rel="stylesheet"
 			href="${pageContext.request.contextPath}/resources/css/tailwind.css"
@@ -17,72 +18,50 @@
 	</head>
 
 	<body class="flex min-h-screen items-center justify-center">
-		<div class="m-10 flex w-[800px] flex-col-reverse gap-5">
+		<div class="m-10 flex w-[600px] flex-col-reverse gap-5">
 			<div class="card w-full">
 				<header class="flex flex-col">
-					<h2>Product Search</h2>
-					<p>Please enter the keyword and choose the product.</p>
+					<h2>Bill Search</h2>
+					<p>Please choose one of the pending bill.</p>
 				</header>
 
-				<section>
-					<form
-						class="flex items-end space-x-5" method="get"
-						action="<%= request.getContextPath() %>/customer/productSearching"
-					>
-						<div class="flex grow flex-col gap-3">
-							<label for="keyword" class="label">Keyword</label>
-							<input
-								class="input" type="text" name="keyword" id="keyword"
-								value="${keyword}"
-							/>
-						</div>
-						<button type="submit" class="btn">Submit</button>
-					</form>
-				</section>
-
-				<section class="overflow-x-auto mt-4">
+				<section class="overflow-x-auto">
 					<div class="rounded-lg border">
 						<table class="table">
 							<thead>
 								<tr>
 									<th class="pl-3">ID</th>
-									<th>Name</th>
-									<th>Producer</th>
-									<th class="text-right pr-3">Price</th>
+									<th>Customer name</th>
+									<th>Date created</th>
+									<th class="pr-3 text-right">Total</th>
 								</tr>
 							</thead>
-
 							<tbody>
 								<c:choose>
-									<c:when test="${keyword.isEmpty()}">
+									<c:when test="${empty searchResult}">
 										<tr>
 											<td colspan="4" class="text-center p-4">
-												Found products will be here.
+												No pending bills found.
 											</td>
 										</tr>
 									</c:when>
-
-									<c:when test="${searchResult.isEmpty()}">
-										<tr>
-											<td colspan="4" class="text-center p-4">
-												No results for "${keyword}"
-											</td>
-										</tr>
-									</c:when>
-
 									<c:otherwise>
-										<c:forEach var="product" items="${searchResult}">
+										<c:forEach var="bill" items="${searchResult}">
 											<tr>
-												<td class="pl-3 font-medium">${product.id}</td>
+												<td class="pl-3 font-medium">
+													${bill.id}
+												</td>
 												<td>
-													<a href="${pageContext.request.contextPath}/customer/product/${product.id}">
-														${product.name}
+													<a href="${pageContext.request.contextPath}/saleAgent/billDetail?id=${bill.id}">
+														${bill.customer.fullName}
 													</a>
 												</td>
-												<td>${product.producer}</td>
+												<td>
+													<fmt:formatDate value="${bill.createOn}" pattern="dd/MM/yyyy"/>
+												</td>
 												<td class="pr-3 text-right">
 													<fmt:formatNumber
-														value="${product.price}"
+														value="${bill.total}"
 														minFractionDigits="2"
 														maxFractionDigits="2"
 													/>
@@ -102,12 +81,7 @@
 					class="text-muted-foreground ml-3 flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5"
 				>
 					<li class="inline-flex items-center gap-1.5">
-						<a
-							href="${pageContext.request.contextPath}/customer/functions"
-							class="hover:text-foreground transition-colors"
-						>
-							Functions
-						</a>
+						<a href="${pageContext.request.contextPath}/saleAgent/functions" class="hover:text-foreground transition-colors">Functions</a>
 					</li>
 					<li>
 						<svg
@@ -126,9 +100,7 @@
 						</svg>
 					</li>
 					<li class="inline-flex items-center gap-1.5">
-						<span class="text-foreground font-normal">
-							Product Search
-						</span>
+						<span class="text-foreground font-normal">Bill Management</span>
 					</li>
 				</ol>
 

@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!--suppress HtmlUnknownTarget -->
 <html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>Document</title>
+		<title>Shop Manager</title>
 
 		<link
 			rel="stylesheet"
@@ -28,12 +29,14 @@
 					</p>
 				</header>
 				<section class="flex flex-col">
-					<a
-						class="btn-outline"
-						href="${pageContext.request.contextPath}/customer/productSearching"
-					>
-						Find Product Detail
-					</a>
+					<c:forEach var="function" items="${functions}">
+						<a
+							class="btn-outline"
+							href="${pageContext.request.contextPath}${function.value}"
+						>
+							${function.key}
+						</a>
+					</c:forEach>
 				</section>
 				<footer class="flex flex-col">
 					<a class="btn w-full" href="#">Log Out</a>
@@ -45,12 +48,9 @@
 					class="text-muted-foreground ml-3 flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5"
 				>
 					<li class="inline-flex items-center gap-1.5">
-						<a
-							href="${pageContext.request.contextPath}/customer/functions"
-							class="text-foreground transition-colors"
-						>
-							Functions
-						</a>
+						<span class="text-foreground font-normal">
+							Home
+						</span>
 					</li>
 				</ol>
 
