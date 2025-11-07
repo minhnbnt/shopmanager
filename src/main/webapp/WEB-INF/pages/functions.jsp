@@ -39,7 +39,7 @@
 					</c:forEach>
 				</section>
 				<footer class="flex flex-col">
-					<a class="btn w-full" href="#">Log Out</a>
+					<a class="btn w-full" href="${pageContext.request.contextPath}/logout">Log Out</a>
 				</footer>
 			</div>
 

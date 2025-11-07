@@ -140,7 +140,7 @@
 					</div>
 				</section>
 				<section class="flex justify-end gap-3">
-					<a href="${pageContext.request.contextPath}/billDetail?id=${bill.id}" class="btn-outline">
+					<a href="${pageContext.request.contextPath}/saleAgent/billDetail?id=${bill.id}" class="btn-outline">
 						Cancel
 					</a>
 					<form action="${pageContext.request.contextPath}/saleAgent/billReview" method="post" class="inline">
@@ -194,7 +194,7 @@
 						</svg>
 					</li>
 					<li class="inline-flex items-center gap-1.5">
-						<a href="${pageContext.request.contextPath}/billDetail?id=${bill.id}" class="hover:text-foreground transition-colors">Bill #${bill.id}</a>
+						<a href="${pageContext.request.contextPath}/saleAgent/billDetail?id=${bill.id}" class="hover:text-foreground transition-colors">Bill #${bill.id}</a>
 					</li>
 					<li>
 						<svg

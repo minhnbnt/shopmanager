@@ -145,7 +145,7 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${deliveryStaffs}" var="staff">
-										<tr>
+										<tr style="cursor: pointer;" onclick="window.location='${pageContext.request.contextPath}/saleAgent/billReview?billId=${bill.id}&deliveryStaffId=${staff.id}'">
 											<td class="pl-3">${staff.id}</td>
 											<td>${staff.username}</td>
 											<td>${staff.fullName}</td>

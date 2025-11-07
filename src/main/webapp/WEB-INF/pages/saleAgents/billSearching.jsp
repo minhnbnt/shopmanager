@@ -47,14 +47,12 @@
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="bill" items="${searchResult}">
-											<tr>
+											<tr style="cursor: pointer;" onclick="window.location='${pageContext.request.contextPath}/saleAgent/billDetail?id=${bill.id}'">
 												<td class="pl-3 font-medium">
 													${bill.id}
 												</td>
 												<td>
-													<a href="${pageContext.request.contextPath}/saleAgent/billDetail?id=${bill.id}">
-														${bill.customer.fullName}
-													</a>
+													${bill.customer.fullName}
 												</td>
 												<td>
 													<fmt:formatDate value="${bill.createOn}" pattern="dd/MM/yyyy"/>

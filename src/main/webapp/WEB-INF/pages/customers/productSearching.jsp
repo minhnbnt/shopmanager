@@ -72,12 +72,10 @@
 
 									<c:otherwise>
 										<c:forEach var="product" items="${searchResult}">
-											<tr>
+											<tr style="cursor: pointer;" onclick="window.location='${pageContext.request.contextPath}/customer/product/${product.id}'">
 												<td class="pl-3 font-medium">${product.id}</td>
 												<td>
-													<a href="${pageContext.request.contextPath}/customer/product/${product.id}">
-														${product.name}
-													</a>
+													${product.name}
 												</td>
 												<td>${product.producer}</td>
 												<td class="pr-3 text-right">

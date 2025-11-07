@@ -32,7 +32,6 @@
                          tableName="sessions"/>
 
     <httpSession storageRef="session_db"
-                 cookieSecure="true"
                  cookieHttpOnly="true"
                  cookieSameSite="Strict"/>
 </server>
