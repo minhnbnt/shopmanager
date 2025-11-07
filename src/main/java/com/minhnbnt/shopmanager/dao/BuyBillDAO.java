@@ -4,12 +4,11 @@ import com.minhnbnt.shopmanager.models.*;
 import jakarta.annotation.Nullable;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
-
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
+import lombok.RequiredArgsConstructor;
 
 @Dependent
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -18,24 +17,23 @@ public class BuyBillDAO {
     private final DataSource dataSource;
 
     public List<BuyBill> listPendingBills() {
-
         var sql = """
-                SELECT
-                    bb.id,
-                    bb.createdOn,
-                    u.fullName as customerName,
-                    COALESCE((
-                        SELECT SUM(bd.quantity * p.price)
-                        FROM tblBuyDetail bd
-                        INNER JOIN tblProduct p ON bd.productId = p.id
-                        WHERE bd.buyBillId = bb.id
-                    ), 0) as total
-                FROM tblBuyBill bb
-                INNER JOIN tblCustomer c ON bb.customerId = c.id
-                INNER JOIN tblUser u ON c.userId = u.id
-                WHERE bb.deliveryStaffId IS NULL
-                ORDER BY bb.id DESC
-            """;
+            SELECT
+                bb.id,
+                bb.createdOn,
+                u.fullName as customerName,
+                COALESCE((
+                    SELECT SUM(bd.quantity * p.price)
+                    FROM tblBuyDetail bd
+                    INNER JOIN tblProduct p ON bd.productId = p.id
+                    WHERE bd.buyBillId = bb.id
+                ), 0) as total
+            FROM tblBuyBill bb
+            INNER JOIN tblCustomer c ON bb.customerId = c.id
+            INNER JOIN tblUser u ON c.userId = u.id
+            WHERE bb.deliveryStaffId IS NULL
+            ORDER BY bb.id DESC
+        """;
 
         try (
             var connection = dataSource.getConnection();
@@ -45,6 +43,7 @@ public class BuyBillDAO {
 
             try (var resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+
                     var customer = Customer.builder().build();
                     customer.setFullName(resultSet.getString("customerName"));
 
@@ -67,17 +66,16 @@ public class BuyBillDAO {
 
     @Nullable
     public BuyBill getById(int id) {
-
         var fetchBillDetailQuery = """
-                SELECT
-                    bd.quantity,
-                    p.name as productName,
-                    p.price,
-                    (bd.quantity * p.price) as subTotal
-                FROM tblBuyDetail bd
-                INNER JOIN tblProduct p ON bd.productId = p.id
-                WHERE bd.buyBillId = ?
-            """;
+            SELECT
+                bd.quantity,
+                p.name as productName,
+                p.price,
+                (bd.quantity * p.price) as subTotal
+            FROM tblBuyDetail bd
+            INNER JOIN tblProduct p ON bd.productId = p.id
+            WHERE bd.buyBillId = ?
+        """;
 
         var details = new ArrayList<BuyDetail>();
 
@@ -85,7 +83,6 @@ public class BuyBillDAO {
             var connection = dataSource.getConnection();
             var statement = connection.prepareStatement(fetchBillDetailQuery)
         ) {
-
             statement.setInt(1, id);
 
             try (var resultSet = statement.executeQuery()) {
@@ -110,37 +107,36 @@ public class BuyBillDAO {
         }
 
         var fetchBillSql = """
-                SELECT
-                    bb.id,
-                    bb.createdOn,
-                    bb.receivedOn,
-                    u.fullName AS customerName,
-                    u.address AS customerAddress,
-                    u.phoneNumber AS customerPhone,
-                    ds.fullName AS deliveryStaffName,
-                    ds.phoneNumber AS deliveryStaffPhoneNumber
-                FROM tblBuyBill bb
-                INNER JOIN tblUser u ON bb.customerId = u.id
-                LEFT JOIN tblUser ds ON bb.deliveryStaffId = ds.id
-                WHERE bb.id = ?
-            """;
+            SELECT
+                bb.id,
+                bb.createdOn,
+                bb.receivedOn,
+                u.fullName AS customerName,
+                u.address AS customerAddress,
+                u.phoneNumber AS customerPhone,
+                ds.fullName AS deliveryStaffName,
+                ds.phoneNumber AS deliveryStaffPhoneNumber
+            FROM tblBuyBill bb
+            INNER JOIN tblUser u ON bb.customerId = u.id
+            LEFT JOIN tblUser ds ON bb.deliveryStaffId = ds.id
+            WHERE bb.id = ?
+        """;
 
         try (
             var connection = dataSource.getConnection();
             var statement = connection.prepareStatement(fetchBillSql)
         ) {
-
             statement.setInt(1, id);
 
             try (var resultSet = statement.executeQuery()) {
-
                 var found = resultSet.next();
                 if (!found) {
                     return null;
                 }
 
-                var deliveryStaffPhoneNumber =
-                    resultSet.getString("deliveryStaffPhoneNumber");
+                var deliveryStaffPhoneNumber = resultSet.getString(
+                    "deliveryStaffPhoneNumber"
+                );
 
                 var deliveryStaffExists = deliveryStaffPhoneNumber != null;
 
@@ -148,7 +144,9 @@ public class BuyBillDAO {
                 if (deliveryStaffExists) {
                     deliveryStaff = DeliveryStaff.builder().build();
                     deliveryStaff.setPhoneNumber(deliveryStaffPhoneNumber);
-                    deliveryStaff.setFullName(resultSet.getString("deliveryStaffName"));
+                    deliveryStaff.setFullName(
+                        resultSet.getString("deliveryStaffName")
+                    );
                 }
 
                 var customer = Customer.builder().build();
@@ -167,7 +165,8 @@ public class BuyBillDAO {
                     status = "Delivered";
                 }
 
-                var total = details.stream()
+                var total = details
+                    .stream()
                     .mapToDouble(BuyDetail::getSubTotal)
                     .sum();
 
@@ -187,5 +186,32 @@ public class BuyBillDAO {
         }
     }
 
-    public void reviewBill() {}
+    @SuppressWarnings("DataFlowIssue")
+    public void reviewBill(BuyBill buyBill) {
+
+        var sql = """
+            UPDATE tblBuyBill
+            SET deliveryStaffId = ?,
+                saleAgentId = (
+                    SELECT u.id
+                    FROM tblUser u
+                    WHERE u.username = ?
+                )
+            WHERE id = ?
+        """;
+
+        try (
+            var connection = dataSource.getConnection();
+            var statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setInt(1, buyBill.getDeliveryStaff().getId());
+            statement.setString(2, buyBill.getSubmitter().getUsername());
+            statement.setInt(3, buyBill.getId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

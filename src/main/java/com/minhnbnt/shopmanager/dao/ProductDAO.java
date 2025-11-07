@@ -34,6 +34,7 @@ public class ProductDAO {
 
             try (var resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+
                     var product = Product.builder()
                         .id(resultSet.getInt("id"))
                         .name(resultSet.getString("name"))

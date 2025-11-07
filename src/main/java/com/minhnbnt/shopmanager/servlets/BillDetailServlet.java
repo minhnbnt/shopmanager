@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 
-@WebServlet("/saleAgent/billDetail")
 @RequestScoped
+@WebServlet("/saleAgent/billDetail")
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class BillDetailServlet extends HttpServlet {
 
@@ -23,6 +23,7 @@ public class BillDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
+
         var idParam = req.getParameter("id");
         if (idParam == null || idParam.trim().isEmpty()) {
             resp.sendError(
