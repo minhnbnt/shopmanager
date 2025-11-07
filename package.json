@@ -4,24 +4,25 @@
   "scripts": {
     "build": "pnpm build:css && pnpm build:liberty",
     "build:css": "tailwindcss -i main/tailwindcss/input.css -o main/webapp/resources/css/tailwind.css -m --cwd ./src",
-    "build:liberty": "./mvnw liberty:package -Dinclude=runnable",
+    "build:liberty": "./mvnw compiler:compile liberty:install-feature liberty:deploy liberty:package -Dinclude=minify,runnable",
     "preview": "dotenv -- java -jar ./target/shopmanager.jar",
     "dev": "concurrently \"pnpm dev:css\" \"pnpm dev:liberty\"",
     "dev:css": "tailwindcss -i main/tailwindcss/input.css -o main/webapp/resources/css/tailwind.css -w --map --cwd ./src",
     "dev:liberty": "dotenv -- ./mvnw liberty:dev",
+    "preinstall": "./mvnw resources:resources liberty:create",
     "postinstall": "cpx \"./node_modules/basecoat-css/dist/js/*.min.js\" ./src/main/webapp/resources/js/basecoat",
     "clean": "./mvnw clean:clean"
   },
   "author": "minhnbnt",
   "packageManager": "pnpm@10.14.0",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.15",
+    "@tailwindcss/cli": "^4.1.17",
     "concurrently": "^9.2.1",
     "cpx2": "^8.0.0",
     "dotenv-cli": "^10.0.0"
   },
   "dependencies": {
-    "basecoat-css": "^0.3.2",
-    "tailwindcss": "^4.1.15"
+    "basecoat-css": "^0.3.3",
+    "tailwindcss": "^4.1.17"
   }
 }
