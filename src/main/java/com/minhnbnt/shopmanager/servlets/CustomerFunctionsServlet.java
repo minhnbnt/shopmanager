@@ -30,7 +30,7 @@ public class CustomerFunctionsServlet extends HttpServlet {
             req.setAttribute("username", username);
             req.setAttribute("functions", functions);
             req
-                .getRequestDispatcher("/WEB-INF/pages/functions.jsp")
+                .getRequestDispatcher("/WEB-INF/pages/common/functions.jsp")
                 .forward(req, resp);
 
         } else {

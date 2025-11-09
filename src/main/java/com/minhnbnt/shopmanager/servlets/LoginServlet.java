@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/pages/common/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class LoginServlet extends HttpServlet {
         }
 
         req.setAttribute("errorMessage", errorMessage);
-        req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/pages/common/login.jsp").forward(req, resp);
     }
 }

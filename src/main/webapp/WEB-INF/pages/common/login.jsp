@@ -19,7 +19,7 @@
 		<script src="${pageContext.request.contextPath}/resources/js/darkmode.js"></script>
 	</head>
 
-	<body class="flex items-center w-full h-full justify-center relative">
+	<body class="flex items-center min-h-screen justify-center relative">
 		<button
 			type="button"
 			aria-label="Toggle dark mode"

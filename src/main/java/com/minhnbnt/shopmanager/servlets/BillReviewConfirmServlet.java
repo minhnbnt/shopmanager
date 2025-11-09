@@ -163,6 +163,7 @@ public class BillReviewConfirmServlet extends HttpServlet {
 
         buyBillDAO.reviewBill(billToReview);
 
-        resp.sendRedirect(req.getContextPath() + "/billDetail?id=" + billId);
+        var url = req.getContextPath() + "/saleAgent/billDetail?id=" + billId;
+        resp.sendRedirect(url);
     }
 }
