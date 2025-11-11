@@ -1,4 +1,4 @@
-package com.minhnbnt.shopmanager.dao;
+package com.minhnbnt.shopmanager.daos;
 
 
 import com.minhnbnt.shopmanager.models.User;

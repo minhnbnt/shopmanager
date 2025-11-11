@@ -1,6 +1,6 @@
 package com.minhnbnt.shopmanager.servlets;
 
-import com.minhnbnt.shopmanager.dao.ProductDAO;
+import com.minhnbnt.shopmanager.daos.ProductDAO;
 import com.minhnbnt.shopmanager.models.Product;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;

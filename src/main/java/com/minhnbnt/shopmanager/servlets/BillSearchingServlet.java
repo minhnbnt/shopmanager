@@ -1,6 +1,6 @@
 package com.minhnbnt.shopmanager.servlets;
 
-import com.minhnbnt.shopmanager.dao.BuyBillDAO;
+import com.minhnbnt.shopmanager.daos.BuyBillDAO;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;

@@ -1,7 +1,7 @@
 package com.minhnbnt.shopmanager.servlets;
 
-import com.minhnbnt.shopmanager.dao.BuyBillDAO;
-import com.minhnbnt.shopmanager.dao.DeliveryStaffDAO;
+import com.minhnbnt.shopmanager.daos.BuyBillDAO;
+import com.minhnbnt.shopmanager.daos.DeliveryStaffDAO;
 import com.minhnbnt.shopmanager.models.BuyBill;
 import com.minhnbnt.shopmanager.models.DeliveryStaff;
 import com.minhnbnt.shopmanager.models.SaleAgent;
